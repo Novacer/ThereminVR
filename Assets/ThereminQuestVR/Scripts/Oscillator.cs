@@ -26,10 +26,10 @@ namespace ThereminQuestVR {
 		private AudioSource audioSource;
         private float volume;
         private float volumeHandDistance;
-		private bool volumeHandDetected;
+        private bool volumeHandDetected;
         private float pitch;
         private float pitchHandDistance;
-		private bool pitchHandDetected;
+        private bool pitchHandDetected;
 
         private readonly int markerRange = 24;
         private readonly int[] blackKeys = { 1, 4, 6, 9, 11 };
@@ -39,9 +39,9 @@ namespace ThereminQuestVR {
 
         void Start() {
 			
-			// Launch coroutines to mark both hands as detected.
-			StartCoroutine(DetectPitchHand());
-			StartCoroutine(DetectVolumeHand());
+            // Launch coroutines to mark both hands as detected.
+            StartCoroutine(DetectPitchHand());
+            StartCoroutine(DetectVolumeHand());
 			
             audioSource = gameObject.GetComponent<AudioSource>();
 
@@ -71,7 +71,7 @@ namespace ThereminQuestVR {
 
             pitch = GetPitch();
             audioSource.pitch = pitch;
-			pitchText.text = "Pitch: " + pitch;
+            pitchText.text = "Pitch: " + pitch;
 
             for (int i = 0; i < markers.Length; i++) {
                 float a = (Mathf.Pow(frequencyRatio, i - markerRange) - pitchMin) / (pitchMax - pitchMin);
@@ -93,39 +93,39 @@ namespace ThereminQuestVR {
             }
         }
 		
-		float GetPitch() {
-			if (!pitchHandDetected && pitchHand.Bones.Count > 0) {
-				pitchHandDistance = HorizontalDistance(pitchHand.transform.position, pitchAntenna.transform.position);
-			} else {
-				float sumDistances = 0;
-				foreach (var bone in pitchHand.Bones) {
-					sumDistances += HorizontalDistance(bone.Transform.position, pitchAntenna.transform.position);
-				}
-				// Set pitchHandDistance to be the average distance.
-				pitchHandDistance = sumDistances / pitchHand.Bones.Count;
-			}
-			return Mathf.Exp(-pitchHandDistance * pitchSensitivity) * (pitchMax - pitchMin) + pitchMin;
-		}
+        float GetPitch() {
+            if (!pitchHandDetected && pitchHand.Bones.Count > 0) {
+                pitchHandDistance = HorizontalDistance(pitchHand.transform.position, pitchAntenna.transform.position);
+            } else {
+                float sumDistances = 0;
+                foreach (var bone in pitchHand.Bones) {
+                    sumDistances += HorizontalDistance(bone.Transform.position, pitchAntenna.transform.position);
+                }
+                // Set pitchHandDistance to be the average distance.
+                pitchHandDistance = sumDistances / pitchHand.Bones.Count;
+            }
+            return Mathf.Exp(-pitchHandDistance * pitchSensitivity) * (pitchMax - pitchMin) + pitchMin;
+        }
 		
         float HorizontalDistance(Vector3 v1, Vector3 v2) {
             return Vector2.Distance(new Vector2(v1.x, v1.z), new Vector2(v2.x, v2.z));
         }
 		
-		float AverageHorizontalDistance() {
-			// return average horizontal distance of all fingers on the pitch hand.
-			// TODO
-			return 0f;
-			
-		}
+        float AverageHorizontalDistance() {
+            // return average horizontal distance of all fingers on the pitch hand.
+            // TODO
+            return 0f;
+            
+        }
 		
-		IEnumerator DetectPitchHand() {
-			yield return new WaitUntil(() => pitchHand.Bones != null && pitchHand.Bones.Count > 0);
-			pitchHandDetected = true;
-		}
-		
-		IEnumerator DetectVolumeHand() {
-			yield return new WaitUntil(() => volumeHand.Bones != null && volumeHand.Bones.Count > 0);
-			volumeHandDetected = true;
-		}
+        IEnumerator DetectPitchHand() {
+            yield return new WaitUntil(() => pitchHand.Bones != null && pitchHand.Bones.Count > 0);
+            pitchHandDetected = true;
+        }
+
+        IEnumerator DetectVolumeHand() {
+            yield return new WaitUntil(() => volumeHand.Bones != null && volumeHand.Bones.Count > 0);
+            volumeHandDetected = true;
+        }
     }
 }
