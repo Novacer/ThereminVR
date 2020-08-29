@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace VirtualTheremin {
+namespace ThereminQuestVR {
     public class Oscillator : MonoBehaviour {
 
         public OVRSkeleton volumeHand;
@@ -113,6 +113,7 @@ namespace VirtualTheremin {
 		
 		float AverageHorizontalDistance() {
 			// return average horizontal distance of all fingers on the pitch hand.
+			// TODO
 			return 0f;
 			
 		}
