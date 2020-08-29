@@ -89,7 +89,7 @@ namespace ThereminQuestVR {
                 }
 
                 if (distance > 0) {
-                    markers[i].transform.localPosition = pitchAntenna.transform.localPosition + Vector3.left * distance;
+                    markers[i].transform.localPosition = pitchAntenna.transform.localPosition + Vector3.right * distance;
                 } else {
                     markers[i].transform.localPosition = pitchAntenna.transform.localPosition;
                 }
