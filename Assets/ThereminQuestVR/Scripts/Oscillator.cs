@@ -21,7 +21,10 @@ namespace ThereminQuestVR {
         public float pitchMax;
         [Range(0, 10)]
         public float pitchMin;
+        [Range(3, 22)]
+        public int numBonesToIncludeInAverage;
         public bool markerIsVisible;
+
 		
         private AudioSource audioSource;
         private float volume;
@@ -102,12 +105,7 @@ namespace ThereminQuestVR {
             if (!pitchHandDetected) {
                 pitchHandDistance = HorizontalDistance(pitchHand.transform.position, pitchAntenna.transform.position);
             } else {
-                float sumDistances = 0;
-                foreach (var bone in pitchHand.Bones) {
-                    sumDistances += HorizontalDistance(bone.Transform.position, pitchAntenna.transform.position);
-                }
-                // Set pitchHandDistance to be the average distance.
-                pitchHandDistance = sumDistances / pitchHand.Bones.Count;
+                pitchHandDistance = ClosestKBonesAverageHorizontalDistance();
             }
             return Mathf.Exp(-pitchHandDistance * pitchSensitivity) * (pitchMax - pitchMin) + pitchMin;
         }
@@ -126,11 +124,44 @@ namespace ThereminQuestVR {
             return Vector2.Distance(new Vector2(v1.x, v1.z), new Vector2(v2.x, v2.z));
         }
 		
-        float Top3AverageHorizontalDistance() {
-            // return average horizontal distance of the 3 closest fingers to the pitch control.
-            // TODO
-            return 0f;
+        float ClosestKBonesAverageHorizontalDistance() {
+            float[] closestK = new float[numBonesToIncludeInAverage];
             
+            for (int i = 0; i < closestK.Length; ++i) {
+                closestK[i] = Mathf.Infinity;
+            }
+            
+            foreach (var bone in pitchHand.Bones) {
+                float distance = HorizontalDistance(bone.Transform.position, pitchAntenna.transform.position);
+                // If distance belongs in closest K, find where it should go.
+                int index = -1;
+                for (int i = 0; i < closestK.Length; ++i) {
+                    if (distance < closestK[i]) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index >= 0) {
+                    // Shift everything including and after index to the right by one.
+                    int i = closestK.Length - 1;
+                    while (index < i) {
+                        // Shift right.
+                        closestK[i] = closestK[i-1];
+                        --i;
+                    }
+                    // Place the new distance in the proper position.
+                    closestK[index] = distance;
+                }
+            }
+            
+            float sumDistances = 0;
+            foreach (var distance in closestK) {
+                if (distance != Mathf.Infinity) {
+                    sumDistances += distance;
+                }
+            }
+            
+            return sumDistances / numBonesToIncludeInAverage;
         }
 		
         IEnumerator DetectPitchHand() {
