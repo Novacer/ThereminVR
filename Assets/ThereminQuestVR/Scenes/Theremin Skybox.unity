@@ -486,6 +486,11 @@ PrefabInstance:
       propertyPath: pitchSensitivity
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 114236053965648702, guid: 006d590cc72f50a47ace793b80eb5ae7,
+        type: 3}
+      propertyPath: numBonesToIncludeInAverage
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 006d590cc72f50a47ace793b80eb5ae7, type: 3}
 --- !u!20 &1317019043 stripped
