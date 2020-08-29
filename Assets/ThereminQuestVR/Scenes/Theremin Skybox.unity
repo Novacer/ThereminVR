@@ -459,7 +459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4293780271772404, guid: 006d590cc72f50a47ace793b80eb5ae7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 82378719202824134, guid: 006d590cc72f50a47ace793b80eb5ae7,
         type: 3}
@@ -481,6 +481,11 @@ PrefabInstance:
       propertyPath: pitchText
       value: 
       objectReference: {fileID: 910504855}
+    - target: {fileID: 114236053965648702, guid: 006d590cc72f50a47ace793b80eb5ae7,
+        type: 3}
+      propertyPath: pitchSensitivity
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 006d590cc72f50a47ace793b80eb5ae7, type: 3}
 --- !u!20 &1317019043 stripped

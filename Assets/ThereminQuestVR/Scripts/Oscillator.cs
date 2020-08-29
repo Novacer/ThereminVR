@@ -126,8 +126,8 @@ namespace ThereminQuestVR {
             return Vector2.Distance(new Vector2(v1.x, v1.z), new Vector2(v2.x, v2.z));
         }
 		
-        float AverageHorizontalDistance() {
-            // return average horizontal distance of all fingers on the pitch hand.
+        float Top3AverageHorizontalDistance() {
+            // return average horizontal distance of the 3 closest fingers to the pitch control.
             // TODO
             return 0f;
             
