@@ -11,7 +11,7 @@ namespace ThereminQuestVR {
         public GameObject volumeAntenna;
         public GameObject pitchAntenna;
         public GameObject marker;
-		public Text pitchText;
+        public Text pitchText;
 
         [Range(0.1f, 50)]
         public float volumeSensitivity;
@@ -23,13 +23,13 @@ namespace ThereminQuestVR {
         public float pitchMin;
         public bool markerIsVisible;
 		
-		private AudioSource audioSource;
+        private AudioSource audioSource;
         private float volume;
         private float volumeHandDistance;
-        private bool volumeHandDetected;
+        private bool volumeHandDetected = false;
         private float pitch;
         private float pitchHandDistance;
-        private bool pitchHandDetected;
+        private bool pitchHandDetected = false;
 
         private readonly int markerRange = 24;
         private readonly int[] blackKeys = { 1, 4, 6, 9, 11 };
@@ -99,7 +99,7 @@ namespace ThereminQuestVR {
         }
 		
         float GetPitch() {
-            if (!pitchHandDetected && pitchHand.Bones.Count > 0) {
+            if (!pitchHandDetected) {
                 pitchHandDistance = HorizontalDistance(pitchHand.transform.position, pitchAntenna.transform.position);
             } else {
                 float sumDistances = 0;
@@ -116,7 +116,7 @@ namespace ThereminQuestVR {
             // Calculate the frequency from the pitch.
             float freq = A4 * pitch;
             // get number of half steps from C0
-            int numHalfSteps = Mathf.RoundToInt(NUM_NOTES * Mathf.Log(freq/C0, 2));
+            int numHalfSteps = Mathf.RoundToInt(NUM_NOTES * Mathf.Log(freq / C0, 2));
             int octave = numHalfSteps / NUM_NOTES;
             int note = numHalfSteps % NUM_NOTES;
             pitchText.text = string.Format("Pitch: {0:0.00}, Frequency: {1:0}Hz, Nearest Note: {2}{3}", pitch, freq, notes[note], octave);
