@@ -3,7 +3,7 @@ Finger-tracked VR Theremin Simulator for Oculus Quest.
 
 Currently in development.
 
-## Youtube Video Demos
+## Youtube Video Demos (Click thumbnail to play)
 
 #### Update 2
 Perform onstage in an intimate setting! Also added an on/off switch to the Theremin.
