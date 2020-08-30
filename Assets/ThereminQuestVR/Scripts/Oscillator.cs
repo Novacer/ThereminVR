@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using OculusSampleFramework;
 
 namespace ThereminQuestVR {
     public class Oscillator : MonoBehaviour {
@@ -33,6 +34,7 @@ namespace ThereminQuestVR {
         private float pitch;
         private float pitchHandDistance;
         private bool pitchHandDetected = false;
+        private bool volumeOn = false;
 
         private readonly int markerRange = 24;
         private readonly int[] blackKeys = { 1, 4, 6, 9, 11 };
@@ -44,6 +46,13 @@ namespace ThereminQuestVR {
         private static readonly float C0 = A4 * Mathf.Pow(2, -4.75f);
         private static readonly string[] notes = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
         private static readonly int NUM_NOTES = 12;
+        
+        // Exposed to on/off button to toggle the audio.
+        public void switchOnOff(InteractableStateArgs state) {
+            if (state.NewInteractableState == InteractableState.ActionState) {
+                volumeOn = !volumeOn;
+            }
+        }
 
         void Start() {
 			
@@ -73,13 +82,13 @@ namespace ThereminQuestVR {
         }
 
         void Update() {
-            volumeHandDistance = Mathf.Max(volumeHand.transform.position.y - volumeAntenna.transform.position.y, 0);
-            volume = 1 - Mathf.Exp(-volumeHandDistance * volumeSensitivity);
-            audioSource.volume = volume;
-
-            pitch = GetPitch();
-            audioSource.pitch = pitch;
-            UpdatePitchUI(pitch);
+            if (volumeOn) {
+                audioSource.volume = GetVolume();
+                audioSource.pitch = GetPitch();
+            } else {
+                audioSource.volume = 0;
+            }
+            UpdatePitchUI();
 
             for (int i = 0; i < markers.Length; i++) {
                 float a = (Mathf.Pow(frequencyRatio, i - markerRange) - pitchMin) / (pitchMax - pitchMin);
@@ -107,17 +116,28 @@ namespace ThereminQuestVR {
             } else {
                 pitchHandDistance = ClosestKBonesAverageHorizontalDistance();
             }
-            return Mathf.Exp(-pitchHandDistance * pitchSensitivity) * (pitchMax - pitchMin) + pitchMin;
+            pitch = Mathf.Exp(-pitchHandDistance * pitchSensitivity) * (pitchMax - pitchMin) + pitchMin;
+            return pitch;
         }
         
-        void UpdatePitchUI(float pitch) {
-            // Calculate the frequency from the pitch.
-            float freq = A4 * pitch;
-            // get number of half steps from C0
-            int numHalfSteps = Mathf.RoundToInt(NUM_NOTES * Mathf.Log(freq / C0, 2));
-            int octave = numHalfSteps / NUM_NOTES;
-            int note = numHalfSteps % NUM_NOTES;
-            pitchText.text = string.Format("Pitch: {0:0.00}, Frequency: {1:0}Hz, Nearest Note: {2}{3}", pitch, freq, notes[note], octave);
+        float GetVolume() {
+            volumeHandDistance = Mathf.Max(volumeHand.transform.position.y - volumeAntenna.transform.position.y, 0);
+            volume = 1 - Mathf.Exp(-volumeHandDistance * volumeSensitivity);
+            return volume;
+        }
+        
+        void UpdatePitchUI() {
+            if (!volumeOn) {
+                pitchText.text = "Theremin is OFF";
+            } else {
+                // Calculate the frequency from the pitch.
+                float freq = A4 * pitch;
+                // get number of half steps from C0
+                int numHalfSteps = Mathf.RoundToInt(NUM_NOTES * Mathf.Log(freq / C0, 2));
+                int octave = numHalfSteps / NUM_NOTES;
+                int note = numHalfSteps % NUM_NOTES;
+                pitchText.text = string.Format("Pitch: {0:0.00}, Frequency: {1:0}Hz, Nearest Note: {2}{3}", pitch, freq, notes[note], octave);
+            }
         }
 		
         float HorizontalDistance(Vector3 v1, Vector3 v2) {
