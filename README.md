@@ -3,8 +3,17 @@ Finger-tracked VR Theremin Simulator for Oculus Quest.
 
 Currently in early stages of development.
 
-## Demo
-Demo video now available! (Feel free to roast my Somewhere Over the Rainbow cover)
+## Video Demos
+
+#### Update 2
+Perform onstage in an intimate setting! Also added an on/off switch to the Theremin.
+
+[![Alt text](https://img.youtube.com/vi/qwFDhWL14CI/0.jpg)](https://www.youtube.com/watch?v=qwFDhWL14CI)
+
+#### Update 1
+Initial prototype demo video! Feel free to roast my Somewhere Over the Rainbow cover.
+
+
 [![Alt text](https://img.youtube.com/vi/QbE59mgRsM8/0.jpg)](https://www.youtube.com/watch?v=QbE59mgRsM8)
 
 
