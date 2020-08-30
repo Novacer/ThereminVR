@@ -1,7 +1,7 @@
 # ThereminQuestVR
 Finger-tracked VR Theremin Simulator for Oculus Quest.
 
-Currently in early stages of development.
+Currently in development.
 
 ## Youtube Video Demos
 
